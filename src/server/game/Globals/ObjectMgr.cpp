@@ -297,6 +297,7 @@ ObjectMgr::ObjectMgr():
     _equipmentSetGuid(1),
     _mailId(1),
     _hiPetNumber(1),
+    _gameSolo(0),
     _creatureSpawnId(1),
     _gameObjectSpawnId(1),
     DBCLocaleIndex(LOCALE_enUS)
@@ -475,12 +476,14 @@ void ObjectMgr::LoadPointOfInterestLocales()
     LOG_INFO("server.loading", ">> Loaded {} Points Of Interest Locale strings in {} ms", (uint32)_pointOfInterestLocaleStore.size(), GetMSTimeDiffToNow(oldMSTime));
 }
 
-void ObjectMgr::LoadCreatureTemplates()
+void ObjectMgr::LoadCreatureTemplates(bool soloMode)
 {
     uint32 oldMSTime = getMSTime();
 
 //                                                   0      1                   2                   3                   4            5            6         7         8
-    QueryResult result = WorldDatabase.Query("SELECT entry, difficulty_entry_1, difficulty_entry_2, difficulty_entry_3, KillCredit1, KillCredit2, modelid1, modelid2, modelid3, "
+    QueryResult result =
+        soloMode ?  
+        WorldDatabase.Query("SELECT entry, difficulty_entry_1, difficulty_entry_2, difficulty_entry_3, KillCredit1, KillCredit2, modelid1, modelid2, modelid3, "
 //                        9         10    11       12        13              14        15        16   17       18       19          20         21          22
                          "modelid4, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, exp, faction, npcflag, speed_walk, speed_run, speed_swim, speed_flight, "
 //                        23               24     25      26         27              28              29               30            31             32          33          34
@@ -493,7 +496,23 @@ void ObjectMgr::LoadCreatureTemplates()
                          "ctm.Ground, ctm.Swim, ctm.Flight, ctm.Rooted, ctm.Chase, ctm.Random, ctm.InteractionPauseTimer, HoverHeight, HealthModifier, ManaModifier, ArmorModifier, ExperienceModifier, "
 //                        64            65          66           67                    68                        69           70
                          "RacialLeader, movementId, RegenHealth, mechanic_immune_mask, spell_school_immune_mask, flags_extra, ScriptName "
-                         "FROM creature_template ct LEFT JOIN creature_template_movement ctm ON ct.entry = ctm.CreatureId;");
+                         "FROM solo_creature_template ct LEFT JOIN creature_template_movement ctm ON ct.entry = ctm.CreatureId;")
+                    :
+        WorldDatabase.Query("SELECT entry, difficulty_entry_1, difficulty_entry_2, difficulty_entry_3, KillCredit1, KillCredit2, modelid1, modelid2, modelid3, "
+//                        9         10    11       12        13              14        15        16   17       18       19          20         21          22
+                         "modelid4, name, subname, IconName, gossip_menu_id, minlevel, maxlevel, exp, faction, npcflag, speed_walk, speed_run, speed_swim, speed_flight, "
+//                        23               24     25      26         27              28              29               30            31             32          33          34
+                         "detection_range, scale, `rank`, dmgschool, DamageModifier, BaseAttackTime, RangeAttackTime, BaseVariance, RangeVariance, unit_class, unit_flags, unit_flags2, "
+//                        35            36      37            38             39             40            41
+                         "dynamicflags, family, trainer_type, trainer_spell, trainer_class, trainer_race, type, "
+//                        42          43      44              45        46              47         48       49       50      51
+                         "type_flags, lootid, pickpocketloot, skinloot, PetSpellDataId, VehicleId, mingold, maxgold, AIName, MovementType, "
+//                        52          53        54          55          56         57          58                         59           60              61            62             63
+                         "ctm.Ground, ctm.Swim, ctm.Flight, ctm.Rooted, ctm.Chase, ctm.Random, ctm.InteractionPauseTimer, HoverHeight, HealthModifier, ManaModifier, ArmorModifier, ExperienceModifier, "
+//                        64            65          66           67                    68                        69           70
+                         "RacialLeader, movementId, RegenHealth, mechanic_immune_mask, spell_school_immune_mask, flags_extra, ScriptName "
+                         "FROM creature_template ct LEFT JOIN creature_template_movement ctm ON ct.entry = ctm.CreatureId;")
+                    ;
 
     if (!result)
     {

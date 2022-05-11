@@ -1541,6 +1541,7 @@ void World::SetInitialWorldSettings()
 
     // Load IP Location Database
     sIPLocation->Load();
+    bool soloMode = sConfigMgr->GetOption<bool>("SoloMode", false);
 
     std::vector<uint32> mapIds;
     for (auto const map : sMapStore)
@@ -1676,7 +1677,7 @@ void World::SetInitialWorldSettings()
     sObjectMgr->LoadCreatureModelInfo();
 
     LOG_INFO("server.loading", "Loading Creature templates...");
-    sObjectMgr->LoadCreatureTemplates();
+    sObjectMgr->LoadCreatureTemplates(soloMode);
 
     LOG_INFO("server.loading", "Loading Equipment templates...");           // must be after LoadCreatureTemplates
     sObjectMgr->LoadEquipmentTemplates();

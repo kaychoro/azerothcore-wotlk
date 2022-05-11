@@ -1006,7 +1006,7 @@ public:
     void LoadBroadcastTextLocales();
     void LoadCreatureClassLevelStats();
     void LoadCreatureLocales();
-    void LoadCreatureTemplates();
+    void LoadCreatureTemplates(bool soloMode);
     void LoadCreatureTemplate(Field* fields);
     void LoadCreatureTemplateAddons();
     void LoadCreatureTemplateResistances();
@@ -1418,6 +1418,7 @@ private:
     std::mutex _mailIdMutex;
     uint32 _hiPetNumber;
     std::mutex _hiPetNumberMutex;
+    uint32 _gameSolo;
 
     ObjectGuid::LowType _creatureSpawnId;
     ObjectGuid::LowType _gameObjectSpawnId;
