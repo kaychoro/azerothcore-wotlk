@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `realmlist` (
 DELETE FROM `realmlist`;
 /*!40000 ALTER TABLE `realmlist` DISABLE KEYS */;
 INSERT INTO `realmlist` (`id`, `name`, `address`, `localAddress`, `localSubnetMask`, `port`, `icon`, `flag`, `timezone`, `allowedSecurityLevel`, `population`, `gamebuild`) VALUES
-	(1, 'AzerothCore', '127.0.0.1', '127.0.0.1', '255.255.255.0', 8085, 0, 2, 1, 0, 0, 12340);
+	(1, 'AzerothCore', '192.168.56.102', '192.168.56.102', '255.255.255.0', 8085, 0, 2, 1, 0, 0, 12340);
 /*!40000 ALTER TABLE `realmlist` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
